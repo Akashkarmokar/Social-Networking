@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
+import FeedImage from './FeedImage'
 
 export default class Feed extends BaseModel {
   @column({ isPrimary: true })
@@ -28,4 +29,8 @@ export default class Feed extends BaseModel {
   })
   public user: BelongsTo<typeof User>
 
+  @hasMany(()=> FeedImage,{
+    foreignKey: 'feedId'
+  })
+  public images: HasMany<typeof FeedImage>
 }

@@ -45,6 +45,7 @@
                                     <div class="_pro_info">
                                         <div class="_pro_info_cover">
                                             <img class="_pro_info_cover_img" src="img/image_1608226845923.jpeg" alt="" title="">
+                                            <!-- <img class="_pro_info_cover_img" src="http://127.0.0.1:3333/Uploads/ak_kmk_1650267467456_0.jpg" alt="" title=""> -->
                                         </div>
                                         
                                         <div class="_pro_info_top">
@@ -109,12 +110,15 @@
                         </Dropdown>
                     </div>
                 </div>
-
+                <!-- post photo  -->
                 <div class="_card_body">
                     <p class="_card_text"><span>{{feed.text}}</span></p>
-                    
-                    <div class="_card_status_pic_all">
-                        <div @click="isModal = true" class="_card_status_pic"><img alt="" title="" class="_card_status_img" src="img/placeholder.png" lazy="loaded"></div>
+                    <p class="_card_text" v-for="(image,index) in feed.images" :key="index"><span>{{image.feed_image_path}}</span></p>
+                    <div class="_card_status_pic_all" v-for="(image,index) in feed.images" :key="index">
+                        <div @click="isModal = true" class="_card_status_pic"><img alt="" title="" class="_card_status_img" v-bind:src="'https://ewr1.vultrobjects.com/folks-upload/cl1yyodle006c81p8a7zig4on.svg'" lazy="loaded"></div>
+                    </div>
+                    <div class="_card_status_pic_all" v-for="(image,index) in feed.images" :key="index">
+                        <div @click="isModal = true" class="_card_status_pic"><img alt="" title="" class="_card_status_img" v-bind:src="'http://127.0.0.1:3333'+'/Uploads/'+`${image.feed_image_path}`" lazy="loaded"></div>
                     </div>
                 </div>
                 
@@ -752,7 +756,7 @@
                         </Dropdown>
                     </div>
                 </div>
-                
+                <!-- second post photo  -->
                 <div class="_card_body">
                     <p class="_card_text"><span>What is your minddds</span></p>
 
@@ -1337,6 +1341,15 @@ export default {
         const feedsData = await this.$axios.$get('/timeline/get-feeds');
         // console.log(feedsData);
         this.allFeeds = feedsData;
+        // console.log(this.allFeeds);
+        for(let singleFeed of this.allFeeds){
+            // console.log(singleFeed.images);
+            const imagePathLength = singleFeed.images.length;
+            // console.log(imagePathLength);
+            singleFeed.images.forEach(element => {
+                console.log(element.feed_image_path);
+            });
+        }
         this.isloaded = true;
     } catch (error) {
         console.log(error);

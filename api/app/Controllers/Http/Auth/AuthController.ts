@@ -31,6 +31,7 @@ export default class AuthController {
   }
   
   async getUser(ctx:HttpContextContract){
+    console.log(ctx.auth.toJSON());
     try{
       return ctx.auth.use('web').authenticate();
     }catch(error){
@@ -38,7 +39,7 @@ export default class AuthController {
     }
   }
   
-  async logout({auth}){
+  async logout({auth}:HttpContextContract){
     return auth.logout()
   }
   

@@ -17,10 +17,8 @@ export default class TimelineController{
         
     }
     public async createPost(ctx:HttpContextContract){
-        console.log(ctx.request.body());
-        console.log(ctx.request.allFiles());
-        // await this.timelineValidator.createPostValidator(ctx);
-        // return await this.timelineService.createPost(ctx);
+        await this.timelineValidator.createPostValidator(ctx);
+        return await this.timelineService.createPost(ctx);
     }
 
     public async getFeeds(ctx:HttpContextContract){

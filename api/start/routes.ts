@@ -27,6 +27,9 @@ import Application from '@ioc:Adonis/Core/Application'
 Route.get('/', ()=>{
   return{message:'You have landed in empty ocean!'}
 })
+/**
+ * Temp Routes
+ */
 Route.post('/create',async({request,response})=>{
   const files = request.allFiles()
   console.log(files);

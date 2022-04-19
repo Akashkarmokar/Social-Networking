@@ -191,33 +191,60 @@ export default {
         // console.log(this.postData);
         
         // Make Form Data
-        let formData = new FormData();
-        const photos = [];
-        for (let fileObj of this.postInfo.fileRecords){
-            // console.log(fileObj);
-            // console.log(fileObj.file);
-            photos.push(fileObj.file);
+        // let formData = new FormData();
+        // const photos = [];
+        // for (let fileObj of this.postInfo.fileRecords){
+        //     // console.log(fileObj);
+        //     // console.log(fileObj.file);
+        //     photos.push(fileObj.file);
+        // }
+        // formData.append('text',this.postInfo.text);
+        // formData.append('images',photos);
+        // const temp = Array.from(formData);
+        // console.log(temp);
+        // // formData.append('images',this.postInfo.fileRecords[0].file)
+        // try {
+        //     // const postedData = await this.$axios.$post('/timeline/create-post',{
+        //     //     //TODO: userId will be authUser id 
+        //     //     "userId":1,
+        //     //     "text":this.postData,
+        //     // });
+        //     const postedData = await this.$axios.$post('/timeline/create-post',formData);
+        //     this.s("Your post is created Successfully !!")
+        //     this.isStatusbox = false;
+        //     // console.log(postedData);
+        // } catch (error) {
+        //     console.log(error)
+        // }
+        
+        if(this.postInfo.text || (this.postInfo.fileRecords.length > 0 )){
+            /**
+             * Make Form Data 
+             */
+            let formData = new FormData();
+            formData.append('text',this.postInfo.text);
+            for(let fileObj of this.postInfo.fileRecords){
+                formData.append('images[]',fileObj.file);
+            }
+
+            /**
+             * Make Request 
+             */
+            try{
+                const postedData = await this.$axios.$post('/timeline/create-post',formData);
+                this.s("Your post is created Successfully !!")
+                this.isStatusbox = false;
+            }catch(error){
+                this.e('Something is Wrong. Try Again ...')
+                console.log(error);
+            }
+
+        }else{
+            this.e('Text or Photo One Field is required !!');
         }
-        formData.append('text',this.postInfo.text);
-        formData.append('images',photos);
-        // formData.append('images',this.postInfo.fileRecords[0].file)
-        try {
-            // const postedData = await this.$axios.$post('/timeline/create-post',{
-            //     //TODO: userId will be authUser id 
-            //     "userId":1,
-            //     "text":this.postData,
-            // });
-            const postedData = await this.$axios.$post('/timeline/create-post',formData,{
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-            this.s("Your post is created Successfully !!")
-            this.isStatusbox = false;
-            // console.log(postedData);
-        } catch (error) {
-            console.log(error)
-        }
+        
+
+
     },
     async create(){
         console.log(this.fileRecords[0]);
